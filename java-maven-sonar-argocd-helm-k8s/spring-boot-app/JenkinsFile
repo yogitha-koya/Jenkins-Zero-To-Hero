@@ -61,12 +61,12 @@ pipeline {
       steps {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
           sh '''
-            # Debug
-            pwd
-            ls -al
-            ls -al java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests
-            
-            sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+            rm -rf Jenkins-Zero-To-Hero
+            git clone https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git
+            cd ${GIT_REPO_NAME}
+        
+            sed -i "s/replaceImageTag/${BUILD_NUMBER}/g java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+        
             git config user.name "yogitha koya"
             git config user.email "yogitha.koya@gmail.com"
 
@@ -75,7 +75,7 @@ pipeline {
             else
               git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
               git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-              git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+              git push origin main
             fi
           '''
         }
