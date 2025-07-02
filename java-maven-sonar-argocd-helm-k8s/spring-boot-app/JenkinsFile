@@ -44,6 +44,23 @@ pipeline {
           sh '''
             cd java-maven-sonar-argocd-helm-k8s/spring-boot-app
             docker build -t $DOCKER_IMAGE .
+
+            # Install Trivy (if not already in your custom image)
+            if ! command -v trivy &> /dev/null; then
+              echo "Installing Trivy..."
+              apk --no-cache add curl
+              curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+            fi
+
+            # Scan the image using Trivy
+            echo "Running Trivy scan on $DOCKER_IMAGE"
+            trivy image --exit-code 1 --severity CRITICAL,HIGH --no-progress $DOCKER_IMAGE
+
+            # Check scan result and exit if vulnerabilities found
+            if [ $? -ne 0 ]; then
+              echo "Trivy scan failed due to vulnerabilities in image: $DOCKER_IMAGE"
+              exit 1
+            fi
           '''
           def dockerImage = docker.image("${DOCKER_IMAGE}")
           docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
