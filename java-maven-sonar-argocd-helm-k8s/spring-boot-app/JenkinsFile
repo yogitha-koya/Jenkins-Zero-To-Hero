@@ -61,15 +61,21 @@ pipeline {
       steps {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
           sh '''
+            # Clean up if repo already exists 
             rm -rf Jenkins-Zero-To-Hero
+            
+            # Clone the repository with credentials
             git clone https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git
             cd ${GIT_REPO_NAME}
-        
+
+            # Update the image tag in deployment.yml
             sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-        
+
+            # Set Git identity
             git config user.name "yogitha koya"
             git config user.email "yogitha.koya@gmail.com"
 
+            # Commit and push only if there are changes
             if git diff --quiet; then
               echo "No changes to commit"
             else
