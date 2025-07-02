@@ -22,7 +22,7 @@ pipeline {
 
     stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://44.244.21.166:9000"
+        SONAR_URL = "http://35.93.25.180:9000"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
@@ -67,7 +67,7 @@ pipeline {
             ls -al java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests
             
             sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-            git config user.name "yogitha-koya"
+            git config user.name "yogitha koya"
             git config user.email "yogitha.koya@gmail.com"
 
             if git diff --quiet; then
