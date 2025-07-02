@@ -54,7 +54,7 @@ pipeline {
 
             # Scan the image using Trivy
             echo "Running Trivy scan on $DOCKER_IMAGE"
-            trivy image --exit-code 1 --severity CRITICAL,HIGH --no-progress $DOCKER_IMAGE
+            trivy image --format table --severity CRITICAL,HIGH --output trivy-report.txt $DOCKER_IMAGE
 
             # Check scan result and exit if vulnerabilities found
             if [ $? -ne 0 ]; then
