@@ -79,6 +79,7 @@ pipeline {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
           sh '''
             # Clean up if repo already exists
+            pwd
             rm -rf Jenkins-Zero-To-Hero
             
             # Clone the repository with git credentials
