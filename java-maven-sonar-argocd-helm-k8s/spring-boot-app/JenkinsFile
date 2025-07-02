@@ -48,7 +48,7 @@ pipeline {
             # Install Trivy (if not already in your custom image)
             if ! command -v trivy &> /dev/null; then
               echo "Installing Trivy..."
-              apt-get update && apt-get install curl
+              apt-get update && apt-get install -y curl
               curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
             fi
 
