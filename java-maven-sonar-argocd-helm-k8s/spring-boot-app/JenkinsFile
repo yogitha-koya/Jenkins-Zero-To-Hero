@@ -86,7 +86,7 @@ pipeline {
             cd ${GIT_REPO_NAME}
 
             # Update the image tag in deployment.yml
-            sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
+            sed -i "s|image: yogithak/ultimate-cicd:[0-9]\\+|image: yogithak/ultimate-cicd:${BUILD_NUMBER}|g" java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
 
             # Set Git identity
             git config user.name "yogitha koya"
