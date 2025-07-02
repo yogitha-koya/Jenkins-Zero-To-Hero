@@ -9,7 +9,7 @@ pipeline {
     stage('Checkout') {
       steps {
         // You must clone the GitHub repo to ensure git operations work
-        git branch: 'main', url: 'https://github.com/yogitha-koya/Jenkins-Zero-To-Hero.git'
+        checkout scm
       }
     }
 
